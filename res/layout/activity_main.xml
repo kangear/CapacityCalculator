@@ -1,0 +1,471 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/pad_bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView1"
+                style="@style/item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="码        流:" />
+
+            <TextView
+                android:id="@+id/data_rate_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/textView1"
+                android:text="4Mbps"
+                android:textColor="#000000" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/custom_button"
+                android:onClick="openDataRateActivity"
+                android:text="设置"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#D3D3D3"
+            android:enabled="false" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/lushu_label_textview"
+                style="@style/item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="输入路数:" />
+
+            <EditText
+                android:id="@+id/lushu_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/lushu_unit_label_textview"
+                android:layout_toRightOf="@+id/lushu_label_textview"
+                android:digits="0123456789"
+                android:gravity="right"
+                android:inputType="numberDecimal"
+                android:text="36"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/lushu_unit_label_textview"
+                style="@style/item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:text="路" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/daysOfDateStorage_label_textview"
+                style="@style/item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="存储时间:" />
+
+            <EditText
+                android:id="@+id/daysOfDateStorage_edittext"
+                style="@style/minTitleFont"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/daysOfDateStorage_unit_textview"
+                android:layout_toRightOf="@+id/daysOfDateStorage_label_textview"
+                android:digits="0123456789"
+                android:gravity="right"
+                android:inputType="numberDecimal"
+                android:text="30"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/daysOfDateStorage_unit_textview"
+                style="@style/item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="5dp"
+                android:text="天" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/capacity_textview_label"
+                style="@style/minTitleFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="总净容量:" />
+
+            <TextView
+                android:id="@+id/capacity_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/capacity_textview_label"
+                android:text="(总净容量值)"
+                android:textColor="#000000" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/custom_button"
+                android:onClick="countNetCapacity"
+                android:text="计算"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/total_capacity_textview_label"
+                style="@style/minTitleFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="容量累计:" />
+
+            <TextView
+                android:id="@+id/total_capacity_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/total_capacity_textview_label"
+                android:text="(总净容量累计值)"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/total_capacity_times_label_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toLeftOf="@+id/total_capacity_button"
+                android:text="(累计次数)"
+                android:textColor="#000000" />
+
+            <Button
+                android:id="@+id/total_capacity_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/custom_button"
+                android:onClick="countTotalNetCapacity"
+                android:text="累计"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#D3D3D3"
+            android:enabled="false" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/drive_cap_textview_label"
+                style="@style/item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="磁盘容量:" />
+
+            <TextView
+                android:id="@+id/drive_capacity_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/drive_cap_textview_label"
+                android:text="(磁盘容量值)"
+                android:textColor="#000000" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/custom_button"
+                android:onClick="openDriveCapacityActivity"
+                android:text="设置"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#D3D3D3"
+            android:enabled="false" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/raid_panshu_label_textview"
+                style="@style/item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="RAID盘位数:" />
+
+            <EditText
+                android:id="@+id/raid_panshu_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/raid_panshu_unit_textview"
+                android:layout_toRightOf="@+id/raid_panshu_label_textview"
+                android:gravity="right"
+                android:inputType="numberDecimal"
+                android:labelFor="@+id/c_raid_panshu"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/raid_panshu_unit_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="盘位"
+                android:textColor="#000000" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#D3D3D3"
+            android:enabled="false" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RAID级别:" />
+
+            <Spinner
+                android:id="@+id/raid_limit_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/minTitleFont"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#D3D3D3"
+            android:enabled="false" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/drive_nums_label_textview"
+                style="@style/minTitleFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="共需硬盘数:" />
+
+            <TextView
+                android:id="@+id/drive_nums_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/drive_nums_label_textview"
+                android:text="(共需硬盘数)"
+                android:textColor="#000000" />
+
+            <Button
+                android:id="@+id/drive_nums_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/custom_button"
+                android:onClick="countDriveNums"
+                android:text="计算"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#D3D3D3"
+            android:enabled="false" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/zhugui_drive_nums_label_textview"
+                style="@style/minTitleFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="主柜硬盘数:" />
+
+            <EditText
+                android:id="@+id/zhugui_drive_nums_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toLeftOf="@+id/zhugui_drive_nums_unit_textview"
+                android:layout_toRightOf="@+id/zhugui_drive_nums_label_textview"
+                android:digits="0123456789"
+                android:gravity="right"
+                android:inputType="numberDecimal"
+                android:text="(主柜硬盘数)"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/zhugui_drive_nums_unit_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="盘位"
+                android:textColor="#000000" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#D3D3D3"
+            android:enabled="false" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/minTitleFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="磁盘阵列数:" />
+
+            <Spinner
+                android:id="@+id/jitou_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <!-- <LinearLayout -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="wrap_content" > -->
+
+
+        <!-- <TextView -->
+        <!-- android:layout_width="wrap_content" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:text="每个主机扩展柜数目:" /> -->
+
+
+        <!-- <EditText -->
+        <!-- android:id="@+id/c_raid_panshu" -->
+        <!-- android:layout_width="wrap_content" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:inputType="numberDecimal" -->
+        <!-- android:labelFor="@+id/c_raid_panshu" -->
+        <!-- android:text="3" /> -->
+        <!-- </LinearLayout> -->
+
+        <TextView
+            android:id="@+id/result_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(计算结果)"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/jisuan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/custom_button"
+            android:onClick="countZhenLieNums"
+            android:text="计算阵列数" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#D3D3D3"
+            android:enabled="false" />
+
+        <!-- <ImageView -->
+        <!-- android:layout_width="match_parent" -->
+        <!-- android:layout_height="100dp" -->
+        <!-- android:scaleType="fitCenter" -->
+        <!-- android:src="@drawable/logo" /> -->
+    </LinearLayout>
+
+</ScrollView>

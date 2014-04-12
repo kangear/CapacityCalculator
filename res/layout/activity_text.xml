@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:layout_width="fill_parent"  
+    android:layout_height="fill_parent"  
+    android:gravity="center" >  
+  
+    <RadioGroup  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:background="@android:color/darker_gray" >  
+  
+        <RadioButton  
+            android:layout_width="200dp"  
+            android:layout_height="wrap_content"  
+            android:button="@null"  
+            android:drawableRight="@android:drawable/btn_radio"  
+            android:text="一" >  
+        </RadioButton>  
+  
+        <RadioButton  
+            android:layout_width="200dp"  
+            android:layout_height="wrap_content"  
+            android:button="@null"  
+            android:drawableRight="@android:drawable/btn_radio"  
+            android:text="一二" >  
+        </RadioButton>  
+  
+        <RadioButton  
+            android:layout_width="200dp"  
+            android:layout_height="wrap_content"  
+            android:button="@null"  
+            android:drawableRight="@android:drawable/btn_radio"  
+            android:text="一二三" >  
+        </RadioButton>  
+  
+        <RadioButton  
+            android:layout_width="200dp"  
+            android:layout_height="wrap_content"  
+            android:button="@null"  
+            android:drawableRight="@android:drawable/btn_radio"  
+            android:text="一二三四" >  
+        </RadioButton>  
+  
+        <RadioButton  
+            android:layout_width="200dp"  
+            android:layout_height="wrap_content"  
+            android:button="@null"  
+            android:drawableRight="@android:drawable/btn_radio"  
+            android:text="一二三四五" >  
+        </RadioButton>  
+  
+        <RadioButton  
+            android:layout_width="200dp"  
+            android:layout_height="wrap_content"  
+            android:button="@null"  
+            android:drawableRight="@android:drawable/btn_radio"  
+            android:text="一二三四五六" >  
+        </RadioButton>  
+  
+        <RadioButton  
+            android:layout_width="200dp"  
+            android:layout_height="wrap_content"  
+            android:button="@null"  
+            android:drawableRight="@android:drawable/btn_radio"  
+            android:text="一二三四五六七" >  
+        </RadioButton>  
+    </RadioGroup>  
+  
+</LinearLayout>
