@@ -23,6 +23,7 @@
                 <!-- cif -->
 
                 <RadioButton
+                    android:textColor="#FFFF00"
                     android:id="@+id/_512kbps_radiobutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -31,18 +32,21 @@
                 <!-- d1 -->
 
                 <RadioButton
+                    android:textColor="#008000"
                     android:id="@+id/_1mbps_radiobutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/_1Mbps" />
 
                 <RadioButton
+                    android:textColor="#008000"
                     android:id="@+id/_1_5mbps_radiobutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/_1.5Mbps" />
 
                 <RadioButton
+                    android:textColor="#008000"
                     android:id="@+id/_2mbps_radiobutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -51,12 +55,14 @@
                 <!-- 720p -->
 
                 <RadioButton
+                    android:textColor="#0000FF"
                     android:id="@+id/_3mbps_radiobutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/_3Mbps" />
 
                 <RadioButton
+                    android:textColor="#0000FF"
                     android:id="@+id/_4mbps_radiobutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -64,18 +70,21 @@
                 <!-- 720p -->
 
                 <RadioButton
+                    android:textColor="#800080"
                     android:id="@+id/_5mbps_radiobutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/_5Mbps" />
 
                 <RadioButton
+                    android:textColor="#800080"
                     android:id="@+id/_6mbps_radiobutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/_6Mbps" />
 
                 <RadioButton
+                    android:textColor="#800080"
                     android:id="@+id/_8mbps_radiobutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

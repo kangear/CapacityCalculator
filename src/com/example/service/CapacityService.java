@@ -1,5 +1,7 @@
 package com.example.service;
 
+import android.text.Html;
+
 public class CapacityService {
 	private final static String LOG_TAG = "CapacityService";
 
@@ -25,22 +27,25 @@ public class CapacityService {
 
 	public static String floatToString(float var) {
 		String unit;
-		if ((int) (var / 1024) <= 0) {
+		float tmp = var;
+		if ((int) (tmp / 1024) <= 0) {
 			unit = "Kbps";
-			if ((int) (var % 1) == 0) {
+			if ((int) (tmp % 1) == 0) {
 				/* qu 0 */
-				return (int) var + unit;
+				return (int) tmp + unit;
 			}
 
-			return var + unit;
+			return tmp + unit;
 		} else {
 			unit = "Mbps";
-			if ((int) (var % 1) == 0) {
+			if ((int) (tmp % 1024) == 0) {
 				/* qu 0 */
-				return (int) var / 1024 + unit;
+				return (int) tmp / 1024 + unit;
 			}
-			return var / 1024 + unit;
+			return (float)(tmp / 1024) + unit;
 		}
+		
+		//Log.i(LOG_TAG, "var=" + var + ";" + "tmp=" + tmp);
 
 	}
 
@@ -129,5 +134,93 @@ public class CapacityService {
 	
 	public static int getKuoZhanGuiNums(int zhuJiGuiNums, int kuoZhanGuisPerZhuji) {
 		return 1;
+	}
+
+	public static int setDataRate(int arg2) {
+		int dateRate = 0;
+		switch (arg2) {
+		case 0:
+			dateRate = 512;
+			break;
+		case 1:
+			dateRate = 1 * 1024;
+			break;
+		case 2:
+			dateRate = (int) (1.5 * 1024);
+			break;
+		case 3:
+			dateRate = 2 * 1024;
+			break;
+		case 4:
+			dateRate = 3 * 1024;
+			break;
+		case 5:
+			dateRate = 4 * 1024;
+			break;
+		case 6:
+			dateRate = 5 * 1024;
+			break;
+		case 7:
+			dateRate = 6 * 1024;
+			break;
+		case 8:
+			dateRate = 8 * 1024;
+		default:
+			/*自定义*/
+			break;
+		}
+		
+		return dateRate;
+	}
+	
+	public static CharSequence[] getDateRate() {
+		CharSequence[] data_rate_array = {
+				Html.fromHtml("<font color=\"#FFFF00\">512Kbps</font>"),
+				Html.fromHtml("<font color=\"#008000\">1Mbps</font>"),
+				Html.fromHtml("<font color=\"#008000\">1.5Mbps</font>"),
+				Html.fromHtml("<font color=\"#008000\">2Mbps</font>"),
+				Html.fromHtml("<font color=\"#0000FF\">3Mbps</font>"),
+				Html.fromHtml("<font color=\"#0000FF\">4Mbps</font>"),
+				Html.fromHtml("<font color=\"#800080\">5Mbps</font>"),
+				Html.fromHtml("<font color=\"#800080\">6Mbps</font>"),
+				Html.fromHtml("<font color=\"#800080\">8Mbps</font>"),
+				Html.fromHtml("<font color=\"#000000\">自定义(Kbps)</font>") };
+		return data_rate_array;
+	}
+
+	public static int dateRateToNum(int dataRate) {
+		int num = 0;
+		switch (dataRate) {
+		case 512:
+			num = 0;
+			break;
+		case 1 * 1024:
+			num = 1;
+			break;
+		case (int) (1.5 * 1024):
+			num = 2;
+			break;
+		case 2 * 1024:
+			num = 3;
+			break;
+		case 3 * 1024:
+			num = 4;
+			break;
+		case 4 * 1024:
+			num = 5;
+			break;
+		case 5 * 1024:
+			num = 6;
+			break;
+		case 6 * 1024:
+			num = 7;
+			break;
+		case 8 * 1024:
+			num = 8;
+		default:
+			break;
+		}
+		
+		return num;
 	}
 }

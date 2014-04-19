@@ -1,5 +1,7 @@
 package com.kangear.capacitycalculator;
 
+import com.example.service.CapacityService;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,11 +23,11 @@ import android.widget.Toast;
 public class DataRateActivity extends Activity {
 	private final String LOG_TAG = "DataRateActivity";
 	private int mDataRate;
+	private int mOldDataRate;
 	private EditText custom_data_rate;
 	private TextView custom_data_rate_unit;
 	private RadioGroup mRadioGroup;
 	private Button ok_button;
-	private boolean isDataRateChanged = false;
 
 	RadioButton _512kbps_radiobutton;
 	RadioButton _1mbps_radiobutton;
@@ -83,13 +85,11 @@ public class DataRateActivity extends Activity {
 		custom_data_rate.addTextChangedListener(new TextWatcher() {
 			public void afterTextChanged(Editable s) {
 				if (!custom_data_rate.getText().toString().matches("")) {
-					isDataRateChanged = true;
 					mDataRate = Integer.valueOf(custom_data_rate.getText()
 							.toString());
 					ok_button.setEnabled(true);
 					Log.i(LOG_TAG, "DataRate: " + mDataRate);
 				} else {
-					isDataRateChanged = false;
 					ok_button.setEnabled(false);
 				}
 			}
@@ -122,7 +122,7 @@ public class DataRateActivity extends Activity {
 
 		/* 获取MainActivity传递过来的值　适当填充到界面中　 */
 		Intent intent = getIntent();
-		mDataRate = Integer.valueOf(intent.getStringExtra("DataRate"));
+		mOldDataRate = mDataRate = Integer.valueOf(intent.getStringExtra("DataRate"));
 		Log.i(LOG_TAG, "mDataRate: " + mDataRate);
 		if (mDataRate != 0) {
 			switch (mDataRate) {
@@ -163,10 +163,11 @@ public class DataRateActivity extends Activity {
 	}
 
 	private void closeThisActivity() {
+		Log.i(LOG_TAG, "mDataRate "+ mDataRate + "mOldDataRate" + mOldDataRate);
 		Toast.makeText(
 				DataRateActivity.this,
-				"码流值:" + floatToString(mDataRate)
-						+ (isDataRateChanged ? "" : "(没有改变)"),
+				"码流值:" + CapacityService.floatToString(mDataRate)
+						+ (mDataRate != mOldDataRate ? "" : "(没有改变)"),
 				Toast.LENGTH_SHORT).show();
 		Intent data = new Intent();
 		data.putExtra("DataRate", mDataRate);
@@ -240,28 +241,6 @@ public class DataRateActivity extends Activity {
 			custom_data_rate.setEnabled(true);
 			custom_data_rate_unit.setEnabled(true);
 		}
-	}
-
-	static String floatToString(float var) {
-		String unit;
-		int tmp = 0;
-		if ((int) (var / 1024) <= 0) {
-			unit = "Kbps";
-			if ((int) (var % 1) == 0) {
-				/* qu 0 */
-				return (int) var + unit;
-			}
-
-			return var + unit;
-		} else {
-			unit = "Mbps";
-			if ((int) (var % 1) == 0) {
-				/* qu 0 */
-				return (int) var / 1024 + unit;
-			}
-			return var / 1024 + unit;
-		}
-
 	}
 
 }

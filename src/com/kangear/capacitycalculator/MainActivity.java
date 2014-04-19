@@ -47,6 +47,8 @@ public class MainActivity extends Activity {
 	private TextView result_textview;
 	private TextView total_capacity_textview;
 	private TextView total_capacity_times_label_textview;
+	private Spinner data_rate_spinner;
+	private EditText data_rate_edittext;
 
 	/** 输入路数 */
 	private int mInputNums = 0;
@@ -121,6 +123,39 @@ public class MainActivity extends Activity {
 	}
 
 	private void init() {
+		/* 码流相关 */
+		data_rate_spinner = (Spinner) this.findViewById(R.id.data_rate_spinner);
+		data_rate_edittext = (EditText) this.findViewById(R.id.data_rate_edittext);
+		ArrayAdapter<CharSequence> data_rate_adapter = new ArrayAdapter<CharSequence>(this,
+				android.R.layout.simple_spinner_item, CapacityService.getDateRate());
+		data_rate_adapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		data_rate_spinner.setAdapter(data_rate_adapter);
+		data_rate_spinner.setPrompt("设置码流");
+		data_rate_spinner.setSelection(CapacityService.dateRateToNum(4*1024));
+		data_rate_spinner
+		.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				if(9 == arg2) {
+					/*自定义*/
+					data_rate_edittext.setText(String.valueOf(mDataRate));
+					data_rate_edittext.setVisibility(View.VISIBLE);
+				} else {
+					mDataRate = CapacityService.setDataRate(arg2);
+					Log.i(LOG_TAG, "码流: " + String.valueOf(mDataRate));
+					data_rate_edittext.setVisibility(View.GONE);
+				}
+					
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+
+			}
+		});
 		dataRate = (TextView) this.findViewById(R.id.data_rate_textview);
 		dataRate.setText(CapacityService.floatToString(mDataRate));
 		inputNums_edittext = (EditText) this.findViewById(R.id.lushu_edittext);
@@ -347,12 +382,14 @@ public class MainActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (resultCode) {
 		case RESULT_OK:
+			/* 磁盘容量返回值 */
 			if (requestCode == CapacityService.REQUESTED_ORIENTATION_DRIVE_CAPACITY) {
 				mDriveCapacity = data.getIntExtra(
 						CapacityService.REQUESTED_NAME_DRIVE_CAPACITY, 0);
 				drive_capacity_textview.setText(mDriveCapacity + "TB");
 				if (DEBUG)
 					Log.i(LOG_TAG, "DriveCapacity: " + mDriveCapacity + "TB");
+			/* 码流返回值 */
 			} else if (requestCode == CapacityService.REQUESTED_ORIENTATION_DATA_RATE) {
 				mDataRate = data.getIntExtra(
 						CapacityService.REQUESTED_NAME_DATA_RATE, 0);
@@ -384,6 +421,14 @@ public class MainActivity extends Activity {
 				+ mCumulativeNumberOfTimes);
 	}
 
+	public void cleanTotalNetCapacity(View v) {
+		mTotalNetCapacity = 0;
+		mCumulativeNumberOfTimes = 0;
+		total_capacity_textview.setText(mTotalNetCapacity + "TB");
+		total_capacity_times_label_textview.setText("次数:"
+				+ mCumulativeNumberOfTimes);
+	}
+
 	public void countDriveNums(View v) {
 		if (DEBUG)
 			Log.i(LOG_TAG, "计算所需硬盘数,总净容量为: " + mTotalNetCapacity + "TB;\n"
@@ -393,6 +438,14 @@ public class MainActivity extends Activity {
 			try {
 				mDriveNums = CapacityService.getDriveNums(mRaidLimit,
 						mTotalNetCapacity, mDriveCapacity, mRaidPanShu);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			drive_nums_textview.setText(String.valueOf(mDriveNums) + "块");
+		} else if (mNetCapacity_int != 0) {
+			try {
+				mDriveNums = CapacityService.getDriveNums(mRaidLimit,
+						mNetCapacity_int, mDriveCapacity, mRaidPanShu);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
