@@ -33,13 +33,10 @@ public class MainActivity extends Activity {
 	private String[] mRaidLimits = { "RAID0或不做RAID", "RAID1/RAID10",
 			"RAID3/RAID5", "RAID5+1热备盘/RAID6", "RAID6+1热备盘" };
 	private Spinner mRaidLimitSpinner;
-	private String[] mJiTous = { "单机头", "带扩展机头" };
 
-	private Spinner mJiTouSpinner;
 	private EditText inputNums_edittext;
 	private EditText daysOfDateStorage_edittext;
 	private TextView net_capacity_textview;
-	private TextView drive_capacity_textview;
 	private TextView drive_nums_textview;
 	private EditText raid_panshu_edittext;
 	private EditText zhugui_drive_nums_edittext;
@@ -49,6 +46,8 @@ public class MainActivity extends Activity {
 	private TextView total_capacity_times_label_textview;
 	private Spinner data_rate_spinner;
 	private EditText data_rate_edittext;
+	private EditText drive_capacity_edittext;
+	private Spinner drive_capacity_spinner;
 
 	/** 输入路数 */
 	private int mInputNums = 0;
@@ -97,21 +96,8 @@ public class MainActivity extends Activity {
 	/** 单机头个数 */
 	private int mSingleHandpieceNums;
 
-	/** 单机头:【共需硬盘数】/【主柜磁盘数】 */
-	private int mSingleHandPiece;
+	private boolean isSingleHandpiece = true;
 
-	private boolean isSingleHandpiece;
-
-	/** 　主机扩展柜数 */
-	private int mKuoZhanGuisPerZhuji;
-
-	/** 　主机柜数 */
-	private int mZhuJiGuiNums;
-
-	/** 　主机柜数 */
-	private int mKuoZhanGuiNums;
-
-	private TextView dataRate;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -142,13 +128,12 @@ public class MainActivity extends Activity {
 				if(9 == arg2) {
 					/*自定义*/
 					data_rate_edittext.setText(String.valueOf(mDataRate));
-					data_rate_edittext.setVisibility(View.VISIBLE);
+					data_rate_edittext.setEnabled(true);
 				} else {
 					mDataRate = CapacityService.setDataRate(arg2);
-					Log.i(LOG_TAG, "码流: " + String.valueOf(mDataRate));
-					data_rate_edittext.setVisibility(View.GONE);
+					data_rate_edittext.setText(String.valueOf(mDataRate));
+					data_rate_edittext.setEnabled(false);
 				}
-					
 			}
 
 			@Override
@@ -156,15 +141,35 @@ public class MainActivity extends Activity {
 
 			}
 		});
-		dataRate = (TextView) this.findViewById(R.id.data_rate_textview);
-		dataRate.setText(CapacityService.floatToString(mDataRate));
-		inputNums_edittext = (EditText) this.findViewById(R.id.lushu_edittext);
+		data_rate_edittext.addTextChangedListener(new TextWatcher() {
+			public void afterTextChanged(Editable s) {
+				if (!data_rate_edittext.getText().toString().matches("")) {
+					mDataRate = Integer.valueOf(data_rate_edittext.getText()
+							.toString());
+				} else {
+					mDataRate = 0;
+				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+
+			}
+		});
 
 		net_capacity_textview = (TextView) this
 				.findViewById(R.id.capacity_textview);
 
 		/* 输入路数相关 */
 		mInputNums = 36;
+		inputNums_edittext = (EditText) this.findViewById(R.id.lushu_edittext);
 		lushu_edittext = (EditText) this.findViewById(R.id.lushu_edittext);
 		lushu_edittext.setFocusableInTouchMode(true);
 		lushu_edittext.requestFocus();
@@ -191,7 +196,8 @@ public class MainActivity extends Activity {
 
 			}
 		});
-
+		
+		/*　存储时间　*/
 		mDaysOfDateStorage = 30;
 		daysOfDateStorage_edittext = (EditText) this
 				.findViewById(R.id.daysOfDateStorage_edittext);
@@ -220,7 +226,48 @@ public class MainActivity extends Activity {
 
 			}
 		});
+		
+		/* 总容量相关　 */
+		total_capacity_textview = (TextView) this
+				.findViewById(R.id.total_capacity_textview);
+		total_capacity_times_label_textview = (TextView) this
+				.findViewById(R.id.total_capacity_times_label_textview);
+		
+		/* 单个磁盘容量相关 */
+		mDriveCapacity = 2;
+		drive_capacity_edittext = (EditText) this.findViewById(R.id.drive_capacity_edittext);
+		drive_capacity_spinner = (Spinner) this.findViewById(R.id.drive_capacity_spinner);
+		ArrayAdapter<CharSequence> drive_capacity_adapter = new ArrayAdapter<CharSequence>(this,
+				android.R.layout.simple_spinner_item, CapacityService.getDriveCapacity());
+		drive_capacity_adapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		drive_capacity_spinner.setAdapter(drive_capacity_adapter);
+		drive_capacity_spinner.setPrompt("设置码流");
+		drive_capacity_spinner.setSelection(CapacityService.driveCapacityToNum(2));
+		drive_capacity_spinner
+		.setOnItemSelectedListener(new OnItemSelectedListener() {
 
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				if(3 == arg2) {
+					/*自定义*/
+					drive_capacity_edittext.setText(String.valueOf(mDriveCapacity));
+					drive_capacity_edittext.setEnabled(true);
+				} else {
+					mDriveCapacity = CapacityService.getDriveCapacity(arg2);
+					drive_capacity_edittext.setEnabled(false);
+					drive_capacity_edittext.setText(String.valueOf(mDriveCapacity));
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+
+			}
+		});
+		
+		
 		/* RAID盘数相关 */
 		mRaidPanShu = 16;
 		raid_panshu_edittext = (EditText) this
@@ -251,18 +298,6 @@ public class MainActivity extends Activity {
 
 			}
 		});
-
-		/* 总容量相关　 */
-		total_capacity_textview = (TextView) this
-				.findViewById(R.id.total_capacity_textview);
-		total_capacity_times_label_textview = (TextView) this
-				.findViewById(R.id.total_capacity_times_label_textview);
-
-		/* 单个磁盘容量相关 */
-		mDriveCapacity = 2;
-		drive_capacity_textview = (TextView) this
-				.findViewById(R.id.drive_capacity_textview);
-		drive_capacity_textview.setText(mDriveCapacity + "TB");
 
 		/* RAID级别相关 */
 		mRaidLimitSpinner = (Spinner) this
@@ -331,42 +366,8 @@ public class MainActivity extends Activity {
 		});
 
 		/* 阵列数相关　 */
-		mJiTouSpinner = (Spinner) this.findViewById(R.id.jitou_spinner);
-		ArrayAdapter<String> jitou_adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, mJiTous);
-		jitou_adapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		isSingleHandpiece = true;
-		mJiTouSpinner.setSelection(0);
-		mJiTouSpinner.setAdapter(jitou_adapter);
-		mJiTouSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				if (arg2 == 0) {
-					isSingleHandpiece = true;
-				} else {
-					isSingleHandpiece = false;
-				}
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-
-			}
-		});
-
 		result_textview = (TextView) this.findViewById(R.id.result_textview);
 
-	}
-
-	public void openDataRateActivity(View v) {
-		Intent intent = new Intent();
-		intent.putExtra("DataRate", String.valueOf(mDataRate));
-		intent.setClass(this, DataRateActivity.class);
-		startActivityForResult(intent,
-				CapacityService.REQUESTED_ORIENTATION_DATA_RATE);
 	}
 
 	public void openDriveCapacityActivity(View v) {
@@ -382,19 +383,6 @@ public class MainActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (resultCode) {
 		case RESULT_OK:
-			/* 磁盘容量返回值 */
-			if (requestCode == CapacityService.REQUESTED_ORIENTATION_DRIVE_CAPACITY) {
-				mDriveCapacity = data.getIntExtra(
-						CapacityService.REQUESTED_NAME_DRIVE_CAPACITY, 0);
-				drive_capacity_textview.setText(mDriveCapacity + "TB");
-				if (DEBUG)
-					Log.i(LOG_TAG, "DriveCapacity: " + mDriveCapacity + "TB");
-			/* 码流返回值 */
-			} else if (requestCode == CapacityService.REQUESTED_ORIENTATION_DATA_RATE) {
-				mDataRate = data.getIntExtra(
-						CapacityService.REQUESTED_NAME_DATA_RATE, 0);
-				dataRate.setText(CapacityService.floatToString(mDataRate));
-			}
 			break;
 		default:
 			break;
@@ -458,23 +446,14 @@ public class MainActivity extends Activity {
 	}
 
 	public void countZhenLieNums(View v) {
-		if (isSingleHandpiece == true) {
-			try {
-				mSingleHandpieceNums = CapacityService.getSingleHandpieceNums(
-						mDriveNums, mZhuGuiDriveNums);
-				Log.i(LOG_TAG, "共需个 " + mSingleHandpieceNums + "单机头");
-				result_textview.setText(Html.fromHtml("共需 " + "<u>"
-						+ mSingleHandpieceNums + "</u>" + " 个单机头"));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else {
-			result_textview.setText(Html.fromHtml("对不起,带扩展机头我还不会算. :("));
-			// mZhuJiGuiNums = CapacityService.getZhuJiGuiNums(mDriveNums,
-			// mZhuGuiDriveNums, mKuoZhanGuiNums);
-			// mKuoZhanGuiNums =
-			// CapacityService.getKuoZhanGuiNums(mZhuJiGuiNums,
-			// mKuoZhanGuisPerZhuji);
+		try {
+			mSingleHandpieceNums = CapacityService.getSingleHandpieceNums(
+					mDriveNums, mZhuGuiDriveNums);
+			Log.i(LOG_TAG, "共需个 " + mSingleHandpieceNums + "单机头");
+			result_textview.setText(Html.fromHtml("共需 " + "<u>"
+					+ mSingleHandpieceNums + "</u>" + " 个单机头"));
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -498,7 +477,7 @@ public class MainActivity extends Activity {
 		Timer tExit = null;
 		if (isExit == false) {
 			isExit = true; // 准备退出
-			Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "再按一次 退出程序", Toast.LENGTH_SHORT).show();
 			tExit = new Timer();
 			tExit.schedule(new TimerTask() {
 				@Override

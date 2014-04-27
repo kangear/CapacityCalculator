@@ -30,11 +30,6 @@
             android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
         <activity
-            android:name=".DataRateActivity"
-            android:label="设置码流"
-            android:windowSoftInputMode="stateAlwaysHidden" >
-        </activity>
-        <activity
             android:name=".DriveCapacityActivity"
             android:label="硬盘容量设置"
             android:theme="@android:style/Theme.Dialog"

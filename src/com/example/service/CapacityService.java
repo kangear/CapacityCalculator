@@ -223,4 +223,48 @@ public class CapacityService {
 		
 		return num;
 	}
+
+	public static CharSequence[] getDriveCapacity() {
+		CharSequence[] sequence = {"1TB", "2TB", "3TB", "自定义(TB)"};
+		return sequence;
+	}
+
+	public static int driveCapacityToNum(int driveCapacity) {
+		int num = 0;
+		switch (driveCapacity) {
+		case 1:
+			num = 0;
+			break;
+		case 2:
+			num = 1;
+			break;
+		case 3:
+			num = 2;
+			break;
+		default:
+			break;
+		}
+		
+		return num;
+	}
+	
+	public static int getDriveCapacity(int arg2) {
+		int dateRate = 0;
+		switch (arg2) {
+		case 0:
+			dateRate = 1;
+			break;
+		case 1:
+			dateRate = 2;
+			break;
+		case 2:
+			dateRate = 3;
+			break;
+		default:
+			/*自定义*/
+			break;
+		}
+		
+		return dateRate;
+	}
 }
