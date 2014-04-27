@@ -400,11 +400,18 @@ public class MainActivity extends Activity {
 		net_capacity_textview.setText("净容量为:" + mNetCapacity_float + "TB\n"
 				+ "取整后为:" + mNetCapacity_int + "TB");
 	}
-
+	String old_tmp_list = "";
 	public void countTotalNetCapacity(View v) {
 		mTotalNetCapacity += mNetCapacity_int;
+		String tmp_list = old_tmp_list;
+		if(mCumulativeNumberOfTimes == 0) {
+			tmp_list = "";
+		}
+		tmp_list = tmp_list + (mCumulativeNumberOfTimes == 0 ? "" : ",") + mNetCapacity_int;
+		old_tmp_list = tmp_list;
 		mCumulativeNumberOfTimes++;
-		total_capacity_textview.setText(mTotalNetCapacity + "TB");
+		//total_capacity_textview.setText(mTotalNetCapacity + "TB");
+		total_capacity_textview.setText(tmp_list + " " + mTotalNetCapacity);
 		total_capacity_times_label_textview.setText("次数:"
 				+ mCumulativeNumberOfTimes);
 	}
@@ -412,7 +419,8 @@ public class MainActivity extends Activity {
 	public void cleanTotalNetCapacity(View v) {
 		mTotalNetCapacity = 0;
 		mCumulativeNumberOfTimes = 0;
-		total_capacity_textview.setText(mTotalNetCapacity + "TB");
+		total_capacity_textview.setText("");
+		old_tmp_list = "";
 		total_capacity_times_label_textview.setText("次数:"
 				+ mCumulativeNumberOfTimes);
 	}
