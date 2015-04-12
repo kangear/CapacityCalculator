@@ -9,7 +9,6 @@
         android:id="@+id/action_about"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="关于"
-        android:onClick="openAboutActivity"/>
+        android:title="关于"/>
 
 </menu>

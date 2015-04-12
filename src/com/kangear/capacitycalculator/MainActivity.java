@@ -26,11 +26,11 @@ import com.example.service.CapacityService;
 
 public class MainActivity extends Activity {
 	private final String LOG_TAG = "MainActivity";
-	private boolean DEBUG = false;
+	private final boolean DEBUG = false;
 	/** 码流　unit:Kbps */
 	private int mDataRate = 4 * 1024;
 	/** raid_limit */
-	private String[] mRaidLimits = { "RAID0或不做RAID", "RAID1/RAID10",
+	private final String[] mRaidLimits = { "RAID0或不做RAID", "RAID1/RAID10",
 			"RAID3/RAID5", "RAID5+1热备盘/RAID6", "RAID6+1热备盘" };
 	private Spinner mRaidLimitSpinner;
 
@@ -96,7 +96,7 @@ public class MainActivity extends Activity {
 	/** 单机头个数 */
 	private int mSingleHandpieceNums;
 
-	private boolean isSingleHandpiece = true;
+	private final boolean isSingleHandpiece = true;
 
 
 	@Override
@@ -142,6 +142,7 @@ public class MainActivity extends Activity {
 			}
 		});
 		data_rate_edittext.addTextChangedListener(new TextWatcher() {
+			@Override
 			public void afterTextChanged(Editable s) {
 				if (!data_rate_edittext.getText().toString().matches("")) {
 					mDataRate = Integer.valueOf(data_rate_edittext.getText()
@@ -175,6 +176,7 @@ public class MainActivity extends Activity {
 		lushu_edittext.requestFocus();
 		lushu_edittext.setText(String.valueOf(mInputNums));
 		lushu_edittext.addTextChangedListener(new TextWatcher() {
+			@Override
 			public void afterTextChanged(Editable s) {
 				if (!lushu_edittext.getText().toString().matches("")) {
 					mInputNums = Integer.valueOf(lushu_edittext.getText()
@@ -196,13 +198,14 @@ public class MainActivity extends Activity {
 
 			}
 		});
-		
+
 		/*　存储时间　*/
 		mDaysOfDateStorage = 30;
 		daysOfDateStorage_edittext = (EditText) this
 				.findViewById(R.id.daysOfDateStorage_edittext);
 		daysOfDateStorage_edittext.setText(String.valueOf(mDaysOfDateStorage));
 		daysOfDateStorage_edittext.addTextChangedListener(new TextWatcher() {
+			@Override
 			public void afterTextChanged(Editable s) {
 				if (!daysOfDateStorage_edittext.getText().toString()
 						.matches("")) {
@@ -226,13 +229,13 @@ public class MainActivity extends Activity {
 
 			}
 		});
-		
+
 		/* 总容量相关　 */
 		total_capacity_textview = (TextView) this
 				.findViewById(R.id.total_capacity_textview);
 		total_capacity_times_label_textview = (TextView) this
 				.findViewById(R.id.total_capacity_times_label_textview);
-		
+
 		/* 单个磁盘容量相关 */
 		mDriveCapacity = 2;
 		drive_capacity_edittext = (EditText) this.findViewById(R.id.drive_capacity_edittext);
@@ -266,14 +269,15 @@ public class MainActivity extends Activity {
 
 			}
 		});
-		
-		
+
+
 		/* RAID盘数相关 */
 		mRaidPanShu = 16;
 		raid_panshu_edittext = (EditText) this
 				.findViewById(R.id.raid_panshu_edittext);
 		raid_panshu_edittext.setText(mRaidPanShu + "");
 		raid_panshu_edittext.addTextChangedListener(new TextWatcher() {
+			@Override
 			public void afterTextChanged(Editable s) {
 				if (!raid_panshu_edittext.getText().toString().matches("")) {
 					// mRaidPanShu = Integer.valueOf(raid_panshu_edittext
@@ -338,6 +342,7 @@ public class MainActivity extends Activity {
 				.findViewById(R.id.zhugui_drive_nums_edittext);
 		zhugui_drive_nums_edittext.setText(mZhuGuiDriveNums + "");
 		zhugui_drive_nums_edittext.addTextChangedListener(new TextWatcher() {
+			@Override
 			public void afterTextChanged(Editable s) {
 				if (!zhugui_drive_nums_edittext.getText().toString()
 						.matches("")) {
@@ -507,14 +512,15 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
-	private void openAboutActivity() {
+	public void openAboutActivity() {
 		Intent intent = new Intent();
 		intent.setClass(this, AboutActivity.class);
 		startActivity(intent);
 	}
-
+//
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.d(LOG_TAG, "onOptionsItemSelected");
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.action_about:
