@@ -20,7 +20,7 @@ public class CapacityService {
 		float NetCapacity = 0;
 		// Log.i(LOG_TAG, "DataRate: "+DataRate + " InputNums: " + InputNums +
 		// " DaysOfDateStorage: " + DaysOfDateStorage);
-		NetCapacity = (((float)DataRate / 1024) * InputNums * DaysOfDateStorage * 3600 * 24)
+		NetCapacity = ((DataRate / 1024) * InputNums * DaysOfDateStorage * 3600 * 24)
 				/ (8 * 1000 * 1000);
 		return NetCapacity;
 	}
@@ -42,15 +42,15 @@ public class CapacityService {
 				/* qu 0 */
 				return (int) tmp / 1024 + unit;
 			}
-			return (float)(tmp / 1024) + unit;
+			return tmp / 1024 + unit;
 		}
-		
+
 		//Log.i(LOG_TAG, "var=" + var + ";" + "tmp=" + tmp);
 
 	}
 
 	/**
-	 * 
+	 *
 	 * @param raidLimit
 	 *            RAID级别
 	 * @param netCapacity
@@ -59,7 +59,7 @@ public class CapacityService {
 	 *            单个硬盘容量
 	 * @param raidPanShu
 	 *            RAID盘数
-	 * @return 返回总硬盘数　　　　　　　　
+	 * @return 返回总硬盘数
 	 * @throws Exception
 	 *             RAID级别异常
 	 */
@@ -72,7 +72,7 @@ public class CapacityService {
 		 * 【RAID1/RAID10】:N={A/B取整}*2； 【RAID3/RAID5】：N=((A/B)/C)取整+（A/B）取整
 		 * 【RAID3或5+热备盘/RAID6】:N=((A/B)/C)取整*2+（A/B）取整
 		 * 【RAID6+1热备盘】：N=((A/B)/C)取整*3+（A/B）取整
-		 * 
+		 *
 		 * 【共需硬盘数】：N 【净容量取整】：A 【单块硬盘的容量】：B 【RAID盘数】：C
 		 */
 		switch (raidLimit) {
@@ -120,7 +120,7 @@ public class CapacityService {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param mDriveNums
 	 * @param mZhuGuiDriveNums
 	 * @param mKuoZhanGuiNums
@@ -131,7 +131,7 @@ public class CapacityService {
 		return (int) Math.ceil((float) driveNums
 				/ (float) (zhuGuiDriveNums + kuoZhanGuiNums * zhuGuiDriveNums));
 	}
-	
+
 	public static int getKuoZhanGuiNums(int zhuJiGuiNums, int kuoZhanGuisPerZhuji) {
 		return 1;
 	}
@@ -169,10 +169,10 @@ public class CapacityService {
 			/*自定义*/
 			break;
 		}
-		
+
 		return dateRate;
 	}
-	
+
 	public static CharSequence[] getDateRate() {
 		CharSequence[] data_rate_array = {
 				Html.fromHtml("<font color=\"#FFFF00\">512Kbps</font>"),
@@ -220,12 +220,12 @@ public class CapacityService {
 		default:
 			break;
 		}
-		
+
 		return num;
 	}
 
 	public static CharSequence[] getDriveCapacity() {
-		CharSequence[] sequence = {"1TB", "2TB", "3TB", "自定义(TB)"};
+		CharSequence[] sequence = {"1TB", "2TB", "3TB", "4TB", "自定义(TB)"};
 		return sequence;
 	}
 
@@ -244,27 +244,24 @@ public class CapacityService {
 		default:
 			break;
 		}
-		
+
 		return num;
 	}
-	
+
 	public static int getDriveCapacity(int arg2) {
 		int dateRate = 0;
 		switch (arg2) {
 		case 0:
-			dateRate = 1;
-			break;
 		case 1:
-			dateRate = 2;
-			break;
 		case 2:
-			dateRate = 3;
+		case 3:
+			dateRate = arg2 + 1;
 			break;
 		default:
 			/*自定义*/
 			break;
 		}
-		
+
 		return dateRate;
 	}
 }

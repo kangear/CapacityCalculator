@@ -34,20 +34,19 @@ public class MainActivity extends Activity {
 			"RAID3/RAID5", "RAID5+1热备盘/RAID6", "RAID6+1热备盘" };
 	private Spinner mRaidLimitSpinner;
 
-	private EditText inputNums_edittext;
-	private EditText daysOfDateStorage_edittext;
-	private TextView net_capacity_textview;
+	private EditText daysOfDateStorageEdittext;
+	private TextView mNetCapacityTextView;
 	private TextView drive_nums_textview;
 	private EditText raid_panshu_edittext;
 	private EditText zhugui_drive_nums_edittext;
-	private EditText lushu_edittext;
+	private EditText mLushuEdittext;
 	private TextView result_textview;
-	private TextView total_capacity_textview;
-	private TextView total_capacity_times_label_textview;
-	private Spinner data_rate_spinner;
-	private EditText data_rate_edittext;
-	private EditText drive_capacity_edittext;
-	private Spinner drive_capacity_spinner;
+	private TextView mTotalCapacityTextView;
+	private TextView mTotalCapacityTimesLabelTextView;
+	private Spinner mDatarateSpinner;
+	private EditText mDatarateEdittext;
+	private EditText mDriveCapacityEditText;
+	private Spinner mDriveCapacitySpinner;
 
 	/** 输入路数 */
 	private int mInputNums = 0;
@@ -88,16 +87,8 @@ public class MainActivity extends Activity {
 	/** 主柜硬盘数 */
 	private int mZhuGuiDriveNums;
 
-	/**
-	 * 共需阵列数 【共需硬盘数】/【主柜硬盘数】然后向上取整
-	 */
-	private int mZhenLieNums;
-
 	/** 单机头个数 */
 	private int mSingleHandpieceNums;
-
-	private final boolean isSingleHandpiece = true;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -105,21 +96,20 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		init();
-
 	}
 
 	private void init() {
 		/* 码流相关 */
-		data_rate_spinner = (Spinner) this.findViewById(R.id.data_rate_spinner);
-		data_rate_edittext = (EditText) this.findViewById(R.id.data_rate_edittext);
+		mDatarateSpinner = (Spinner) this.findViewById(R.id.data_rate_spinner);
+		mDatarateEdittext = (EditText) this.findViewById(R.id.data_rate_edittext);
 		ArrayAdapter<CharSequence> data_rate_adapter = new ArrayAdapter<CharSequence>(this,
 				android.R.layout.simple_spinner_item, CapacityService.getDateRate());
 		data_rate_adapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		data_rate_spinner.setAdapter(data_rate_adapter);
-		data_rate_spinner.setPrompt("设置码流");
-		data_rate_spinner.setSelection(CapacityService.dateRateToNum(4*1024));
-		data_rate_spinner
+		mDatarateSpinner.setAdapter(data_rate_adapter);
+		mDatarateSpinner.setPrompt("设置码流");
+		mDatarateSpinner.setSelection(CapacityService.dateRateToNum(4*1024));
+		mDatarateSpinner
 		.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -127,12 +117,12 @@ public class MainActivity extends Activity {
 					int arg2, long arg3) {
 				if(9 == arg2) {
 					/*自定义*/
-					data_rate_edittext.setText(String.valueOf(mDataRate));
-					data_rate_edittext.setEnabled(true);
+					mDatarateEdittext.setText(String.valueOf(mDataRate));
+					mDatarateEdittext.setEnabled(true);
 				} else {
 					mDataRate = CapacityService.setDataRate(arg2);
-					data_rate_edittext.setText(String.valueOf(mDataRate));
-					data_rate_edittext.setEnabled(false);
+					mDatarateEdittext.setText(String.valueOf(mDataRate));
+					mDatarateEdittext.setEnabled(false);
 				}
 			}
 
@@ -141,11 +131,11 @@ public class MainActivity extends Activity {
 
 			}
 		});
-		data_rate_edittext.addTextChangedListener(new TextWatcher() {
+		mDatarateEdittext.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void afterTextChanged(Editable s) {
-				if (!data_rate_edittext.getText().toString().matches("")) {
-					mDataRate = Integer.valueOf(data_rate_edittext.getText()
+				if (!mDatarateEdittext.getText().toString().matches("")) {
+					mDataRate = Integer.valueOf(mDatarateEdittext.getText()
 							.toString());
 				} else {
 					mDataRate = 0;
@@ -165,21 +155,20 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		net_capacity_textview = (TextView) this
+		mNetCapacityTextView = (TextView) this
 				.findViewById(R.id.capacity_textview);
 
 		/* 输入路数相关 */
 		mInputNums = 36;
-		inputNums_edittext = (EditText) this.findViewById(R.id.lushu_edittext);
-		lushu_edittext = (EditText) this.findViewById(R.id.lushu_edittext);
-		lushu_edittext.setFocusableInTouchMode(true);
-		lushu_edittext.requestFocus();
-		lushu_edittext.setText(String.valueOf(mInputNums));
-		lushu_edittext.addTextChangedListener(new TextWatcher() {
+		mLushuEdittext = (EditText) this.findViewById(R.id.lushu_edittext);
+		mLushuEdittext.setFocusableInTouchMode(true);
+		mLushuEdittext.requestFocus();
+		mLushuEdittext.setText(String.valueOf(mInputNums));
+		mLushuEdittext.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void afterTextChanged(Editable s) {
-				if (!lushu_edittext.getText().toString().matches("")) {
-					mInputNums = Integer.valueOf(lushu_edittext.getText()
+				if (!mLushuEdittext.getText().toString().matches("")) {
+					mInputNums = Integer.valueOf(mLushuEdittext.getText()
 							.toString());
 				} else {
 					mInputNums = 0;
@@ -201,16 +190,16 @@ public class MainActivity extends Activity {
 
 		/*　存储时间　*/
 		mDaysOfDateStorage = 30;
-		daysOfDateStorage_edittext = (EditText) this
+		daysOfDateStorageEdittext = (EditText) this
 				.findViewById(R.id.daysOfDateStorage_edittext);
-		daysOfDateStorage_edittext.setText(String.valueOf(mDaysOfDateStorage));
-		daysOfDateStorage_edittext.addTextChangedListener(new TextWatcher() {
+		daysOfDateStorageEdittext.setText(String.valueOf(mDaysOfDateStorage));
+		daysOfDateStorageEdittext.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void afterTextChanged(Editable s) {
-				if (!daysOfDateStorage_edittext.getText().toString()
+				if (!daysOfDateStorageEdittext.getText().toString()
 						.matches("")) {
 					mDaysOfDateStorage = Integer
-							.valueOf(daysOfDateStorage_edittext.getText()
+							.valueOf(daysOfDateStorageEdittext.getText()
 									.toString());
 				} else {
 					mDaysOfDateStorage = 0;
@@ -231,36 +220,33 @@ public class MainActivity extends Activity {
 		});
 
 		/* 总容量相关　 */
-		total_capacity_textview = (TextView) this
+		mTotalCapacityTextView = (TextView) this
 				.findViewById(R.id.total_capacity_textview);
-		total_capacity_times_label_textview = (TextView) this
+		mTotalCapacityTimesLabelTextView = (TextView) this
 				.findViewById(R.id.total_capacity_times_label_textview);
 
 		/* 单个磁盘容量相关 */
 		mDriveCapacity = 2;
-		drive_capacity_edittext = (EditText) this.findViewById(R.id.drive_capacity_edittext);
-		drive_capacity_spinner = (Spinner) this.findViewById(R.id.drive_capacity_spinner);
+		mDriveCapacityEditText = (EditText) this.findViewById(R.id.drive_capacity_edittext);
+		mDriveCapacitySpinner = (Spinner) this.findViewById(R.id.drive_capacity_spinner);
 		ArrayAdapter<CharSequence> drive_capacity_adapter = new ArrayAdapter<CharSequence>(this,
 				android.R.layout.simple_spinner_item, CapacityService.getDriveCapacity());
 		drive_capacity_adapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		drive_capacity_spinner.setAdapter(drive_capacity_adapter);
-		drive_capacity_spinner.setPrompt("设置码流");
-		drive_capacity_spinner.setSelection(CapacityService.driveCapacityToNum(2));
-		drive_capacity_spinner
+		mDriveCapacitySpinner.setAdapter(drive_capacity_adapter);
+		mDriveCapacitySpinner.setPrompt("设置码流");
+		mDriveCapacitySpinner.setSelection(CapacityService.driveCapacityToNum(2));
+		mDriveCapacitySpinner
 		.setOnItemSelectedListener(new OnItemSelectedListener() {
-
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
-				if(3 == arg2) {
+				if(4 == arg2) {
 					/*自定义*/
-					drive_capacity_edittext.setText(String.valueOf(mDriveCapacity));
-					drive_capacity_edittext.setEnabled(true);
+					mDriveCapacityEditText.setEnabled(true);
 				} else {
-					mDriveCapacity = CapacityService.getDriveCapacity(arg2);
-					drive_capacity_edittext.setEnabled(false);
-					drive_capacity_edittext.setText(String.valueOf(mDriveCapacity));
+					mDriveCapacityEditText.setEnabled(false);
+					mDriveCapacityEditText.setText(String.valueOf(CapacityService.getDriveCapacity(arg2)));
 				}
 			}
 
@@ -395,14 +381,14 @@ public class MainActivity extends Activity {
 	}
 
 	public void countNetCapacity(View v) {
-		mInputNums = Integer.valueOf(inputNums_edittext.getText().toString());
+		mInputNums = Integer.valueOf(mLushuEdittext.getText().toString());
 		mNetCapacity_float = CapacityService.getNetCapcity(mDataRate,
 				mInputNums, mDaysOfDateStorage);
 		mNetCapacity_int = (int) (Math.ceil(mNetCapacity_float));
 		if (DEBUG)
 			Log.i(LOG_TAG, "净容量为: " + mNetCapacity_float + "TB;\n" + "取整为: "
 					+ mNetCapacity_int + "TB");
-		net_capacity_textview.setText("净容量为:" + mNetCapacity_float + "TB\n"
+		mNetCapacityTextView.setText("净容量为:" + mNetCapacity_float + "TB\n"
 				+ "取整后为:" + mNetCapacity_int + "TB");
 	}
 	String old_tmp_list = "";
@@ -416,17 +402,17 @@ public class MainActivity extends Activity {
 		old_tmp_list = tmp_list;
 		mCumulativeNumberOfTimes++;
 		//total_capacity_textview.setText(mTotalNetCapacity + "TB");
-		total_capacity_textview.setText(tmp_list + " " + mTotalNetCapacity);
-		total_capacity_times_label_textview.setText("次数:"
+		mTotalCapacityTextView.setText(tmp_list + " " + mTotalNetCapacity);
+		mTotalCapacityTimesLabelTextView.setText("次数:"
 				+ mCumulativeNumberOfTimes);
 	}
 
 	public void cleanTotalNetCapacity(View v) {
 		mTotalNetCapacity = 0;
 		mCumulativeNumberOfTimes = 0;
-		total_capacity_textview.setText("");
+		mTotalCapacityTextView.setText("");
 		old_tmp_list = "";
-		total_capacity_times_label_textview.setText("次数:"
+		mTotalCapacityTimesLabelTextView.setText("次数:"
 				+ mCumulativeNumberOfTimes);
 	}
 
@@ -435,6 +421,17 @@ public class MainActivity extends Activity {
 			Log.i(LOG_TAG, "计算所需硬盘数,总净容量为: " + mTotalNetCapacity + "TB;\n"
 					+ "单个磁盘容量为: " + mDriveCapacity + "TB;\n" + "RAID级别为: "
 					+ mRaidLimit + ";\n" + mRaidPanShu + "盘位;");
+
+		// 获取最新Drive Capacity值
+		String capString = mDriveCapacityEditText.getText().toString();
+		if(capString.equals("")) {
+			Toast.makeText(MainActivity.this, "磁盘容量不能为空!",
+					Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		mDriveCapacity = Integer.valueOf(capString);
+
 		if (mTotalNetCapacity != 0) {
 			try {
 				mDriveNums = CapacityService.getDriveNums(mRaidLimit,
